@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30803.129
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2B041430-3BEB-4847-A29B-50E0FBB0ED9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7AEB0C08-A5E0-4D6D-98C8-CA686A4F2BCD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolarTFIDF", "src\PolarTFIDF.csproj", "{7385059C-AE92-49D0-889C-291054BADA2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7385059C-AE92-49D0-889C-291054BADA2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7385059C-AE92-49D0-889C-291054BADA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7385059C-AE92-49D0-889C-291054BADA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7385059C-AE92-49D0-889C-291054BADA2C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7385059C-AE92-49D0-889C-291054BADA2C} = {2B041430-3BEB-4847-A29B-50E0FBB0ED9F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29F13573-4661-4C6F-B103-4798847EAA59}
+	EndGlobalSection
+EndGlobal
