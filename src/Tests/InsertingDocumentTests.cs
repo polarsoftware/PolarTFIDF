@@ -24,8 +24,6 @@ namespace Polar.ML.TfIdf
                 new TermData(){ Term = "bluberry", Count = 5 }
             };
 
-            
-
             tfIdfEstimator.AddDocument(docName, terms);
 
             using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
@@ -70,7 +68,6 @@ namespace Polar.ML.TfIdf
             tfIdfEstimator.AddDocument(docName1, terms1);
             tfIdfEstimator.AddDocument(docName2, terms2);
             tfIdfEstimator.AddDocument(docName3, terms3);
-
 
             var t1 = tfIdfEstimator.GetAllTermsInDocument(docName1);
             var t2 = tfIdfEstimator.GetAllTermsInDocument(docName2);
@@ -160,7 +157,6 @@ namespace Polar.ML.TfIdf
             coll.DeleteAll();
             coll2.DeleteAll();
 
-
             string docName1 = "TestDoc1";
             var terms1 = new List<TermData>()
             {
@@ -193,6 +189,5 @@ namespace Polar.ML.TfIdf
         }
 
     }
-
 
 }

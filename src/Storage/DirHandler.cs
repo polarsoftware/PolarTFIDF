@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
-namespace Polar.System
+namespace Polar.ML.TfIdf
 {
     public static class DirHandler
     {
@@ -125,7 +124,6 @@ namespace Polar.System
             }
         }
 
-
         /// <summary>2018-07-17 - 18:29
         /// TODO1 !!!!!: maknuti ovo gdje se god zbraja ime file na ovo jer je to za Linux pogresno - 2018-07-24 - 15:46
         /// (valjda se misli na to kad se dobije string odavde da se rucno ide na ovo dodat npr. "path" + "\db22" a valjda moze sa Path.Combine() ) + 2019-06-13 - 9:53
@@ -163,7 +161,6 @@ namespace Polar.System
                 throw e;
             }
         }
-
 
     }
 }

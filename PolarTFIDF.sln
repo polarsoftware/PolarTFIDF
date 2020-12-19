@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2B041430-3BE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7AEB0C08-A5E0-4D6D-98C8-CA686A4F2BCD}"
 	ProjectSection(SolutionItems) = preProject
-		Readme.txt = Readme.txt
+		test\Readme.txt = test\Readme.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolarTFIDF", "src\PolarTFIDF.csproj", "{7385059C-AE92-49D0-889C-291054BADA2C}"

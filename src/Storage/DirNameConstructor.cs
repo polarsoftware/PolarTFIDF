@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace Polar.System
+namespace Polar.ML.TfIdf
 {
-
     /// <summary>
     /// 2019-01-22 - 15:05
     /// Construct string dir name and path with various combination 
@@ -88,7 +87,6 @@ namespace Polar.System
             return pathCombination;            
         }
        
-
         /// <summary>
         /// 2019-01-22 - 14:51        
         /// Construct and return string of absolute path in application folder on sent name which can be file name or direcotry name

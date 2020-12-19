@@ -1,12 +1,7 @@
 ﻿using LiteDB;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata;
-using System.Runtime.CompilerServices;
-using System.Windows;
 
 namespace Polar.ML.TfIdf
 {
@@ -32,7 +27,6 @@ namespace Polar.ML.TfIdf
 
         public TfIdfEstimator() { }
 
-
         /// <summary>
         /// Adds a new document al;ong with its terms to the database.
         /// </summary>
@@ -48,7 +42,6 @@ namespace Polar.ML.TfIdf
 
             //dodajemo u coll TermCountColl 
             //vrtimopo svim term i pogledati je li ima ovaj tewru coll TermCountColl i ako ima povecamo count a ako nema stvrortimo {term, 1}
-
 
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);
@@ -143,7 +136,6 @@ namespace Polar.ML.TfIdf
             return tsd;
         }
 
-
         public List<string> Search(string keyword)
         {
             int numberOfDocs = 10;
@@ -201,8 +193,6 @@ namespace Polar.ML.TfIdf
         {
             return DocumentSimilarity.GetSimilarDocuments(document1, numberOfDocuments, this);
         }
-
-        
 
         //OLD ******************************************************************************
 
