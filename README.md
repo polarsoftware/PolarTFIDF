@@ -5,7 +5,9 @@ Polar TFIDF is a C# library for dealing with document keywords.
 Download .zip file from github and extract it to your solution.
 
 ## Usage
-
+```cs
+using Polar.ML.TfIdf;
+```
 
 ## FAQ about the source code
 
