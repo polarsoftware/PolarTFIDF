@@ -7,6 +7,27 @@ Download .zip file from github and extract it to your solution.
 ## Usage
 ```cs
 using Polar.ML.TfIdf;
+
+var terms = new List<TermData>(){
+  new TermData(){
+    Count = 2,
+    Term = "to"
+  },
+  new TermData(){
+    Count = 2,
+    Term = "be"
+  },
+  new TermData(){
+    Count = 1,
+    Term = "or"
+  },
+  new TermData(){
+    Count = 1,
+    Term = "not"
+  }
+};
+
+TfIdfEstimator.AddDocument("Hamlet", terms);
 ```
 
 ## FAQ about the source code
