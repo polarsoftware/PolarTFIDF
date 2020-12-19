@@ -12,12 +12,10 @@ Yes. Contact us at: support@polarsoftware.com.
 #### What about newer versions of the source code? Will they be available when new releases come out?
 Yes.
 
-
+## Licence
+The licence agreement can be found in [LICENCE.md](https://github.com/polarsoftware/PolarTFIDF/blob/master/LICENCE.md) file.
 
 ## Buy Polar TFIDF
 You can purchase at:
-
-## Licence
-The licence agreement can be found in [LICENCE.md](https://github.com/polarsoftware/PolarTFIDF/blob/master/LICENCE.md) file.
   
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5GXZ8B4QAT2EW)
