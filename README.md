@@ -1,5 +1,6 @@
 # Polar TFIDF
 Polar TFIDF is a C# library for dealing with document keywords.
+TFIDF stands for [term frequency–inverse document frequency](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).
 
 ## Installation
 Download .zip file from github and extract it to your solution.
