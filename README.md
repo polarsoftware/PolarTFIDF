@@ -8,7 +8,7 @@ Download .zip file from github and export in your project.
 
 
 ## Help
-
+For additional help contact: support@polarsoftware.com.
 
 ## Licence
 The licence agreement can be found in [LICENCE.md](https://github.com/polarsoftware/PolarTFIDF/blob/master/LICENCE.md) file.
