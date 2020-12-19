@@ -12,3 +12,4 @@ Download .zip file from github and export in your project.
 
 ## Licence
 The licence agreement can be found in LICENCE.md file.
+You can buy this licence at: .
