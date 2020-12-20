@@ -1,11 +1,8 @@
 ﻿using LiteDB;
-using System;
-using System.Collections.Generic;
 
 namespace Polar.ML.TfIdf
 {
     /// <summary>
-    /// TODO1: description this!! 
     /// </summary>
     public class TermDocumentCountData
     {

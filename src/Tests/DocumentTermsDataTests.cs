@@ -1,8 +1,6 @@
-﻿using LiteDB;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Xunit;
-using System.Linq;
 
 namespace Polar.ML.TfIdf
 {

@@ -118,15 +118,11 @@ namespace Polar.ML.TfIdf
             }
             catch (Exception e)
             {
-                throw e;
-                //LoggerApp.Error($"ERROR: DirHandler.GetCreateDirInRootApp(List<string> dirs): {e.ToString()} - {DateTime.UtcNow}");
-                //return null;
+                throw e;                
             }
         }
 
         /// <summary>2018-07-17 - 18:29
-        /// TODO1 !!!!!: maknuti ovo gdje se god zbraja ime file na ovo jer je to za Linux pogresno - 2018-07-24 - 15:46
-        /// (valjda se misli na to kad se dobije string odavde da se rucno ide na ovo dodat npr. "path" + "\db22" a valjda moze sa Path.Combine() ) + 2019-06-13 - 9:53
         /// Create dir in root of appicaliton (System.Reflection.Assembly.GetExecutingAssembly().Location;) 
         /// </summary>
         /// <param name="inDirName"></param>
@@ -134,21 +130,7 @@ namespace Polar.ML.TfIdf
         public static string GetCreateDirInRootApp(string inDirName, int parentUpLevel = 0)
         {
             try
-            {
-                /*2019-01-22 - 16:49
-                if (DirNameConstructor.IsDirNameValid(inDirName) == false)
-                {
-                    return null;
-                }
-                string appDirPath = DirNameConstructor.GetAppDir();//vraca c:\users\alpha\documents ili sl patk.. ugalvnom na kraju nema "\\"
-                if (string.IsNullOrWhiteSpace(appDirPath) == true)
-                {
-                    LoggerApp.Error($"ERROR: GetAppDir(string path) if (string.IsNullOrWhiteSpace(appDirPath) == true) - {DateTime.UtcNow}");
-                    return null;
-                }
-
-                string pathCombination = Path.Combine(appDirPath, inDirName);
-                */
+            {               
                 string pathCombination = DirNameConstructor.GetAbsoluteDirPath(inDirName, parentUpLevel);
                 if (Directory.Exists(pathCombination) == false)
                 {
@@ -164,40 +146,3 @@ namespace Polar.ML.TfIdf
 
     }
 }
-
-/*2018-07-18 - 17:17
-           string dir = DirHandler.GetAbsoluteFilePath(inDirName);
-           if (!Directory.Exists(dir))
-           {
-               Directory.CreateDirectory(dir);
-           }*/
-/*inDirName.Trim('\\');
-string dir = DirHandler.GetAppDir() + "\\" + inDirName + "\\";
-if (!Directory.Exists(dir))
-{
-    Directory.CreateDirectory(dir);
-}*/
-
-/*
-    /// <summary>
-    /// </summary>
-    /// <param name="inDirName"></param>
-    /// <returns></returns>
-    public static string GetDirNameAndCreate(string inDirName)
-    {
-        string dir = DirHandler.GetAbsoluteFilePath(inDirName);
-        if (!Directory.Exists(dir))
-        {
-            Directory.CreateDirectory(dir);
-        }
-        return dir;
-
-        2018-07-17 - 18:33
-        inDirName.Trim('\\');
-        string dir = DirHandler.GetAppDir() + "\\" + inDirName + "\\";
-        if (!Directory.Exists(dir))
-        {
-            Directory.CreateDirectory(dir);
-        }
-        //return dir;
-    }*/

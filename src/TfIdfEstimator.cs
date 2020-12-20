@@ -10,7 +10,7 @@ namespace Polar.ML.TfIdf
     /// </summary>
     public class TfIdfEstimator
     {
-        public LiteDBTfIdfStorage TfIdfStorage = new LiteDBTfIdfStorage();//default for now
+        public LiteDBTfIdfStorage TfIdfStorage = new LiteDBTfIdfStorage();
         
         public List<TermData> Terms;
 
@@ -39,9 +39,6 @@ namespace Polar.ML.TfIdf
                 Terms = terms
             };            
             TfIdfStorage.PostDocumentTerms(documentTermsData);
-
-            //dodajemo u coll TermCountColl 
-            //vrtimopo svim term i pogledati je li ima ovaj tewru coll TermCountColl i ako ima povecamo count a ako nema stvrortimo {term, 1}
 
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);
@@ -193,73 +190,5 @@ namespace Polar.ML.TfIdf
         {
             return DocumentSimilarity.GetSimilarDocuments(document1, numberOfDocuments, this);
         }
-
-        //OLD ******************************************************************************
-
-        /// <summary>
-        /// For Search - 
-        /// </summary>
-        /// <param name="document"></param>
-        /// <param name="term"></param>
-        /// <param name="termsTfIdf"></param>
-        //public List<xxxx> documentRanking Get(string term)        {        }
-
-        //public bool GetTfIdf(string termName, out double tfidfValue)
-        //{
-        //    tfidfValue = 0;
-            
-        //    //calculate TF
-        //    TermData term = Terms.FirstOrDefault(d => d.Term == termName);
-        //    if (term == null)
-        //    {
-        //        return false;
-        //    }
-        //    double termFrequency = term.Count / SumTermsCount;
-
-        //    //calculate IDF 
-        //    tfidfValue = 0;            
-        //    if (TfIdfStorage.GetTermDocumentFrequency(termName, out long termDocumentCount, out long totalDocumentCunt) == false)
-        //    {
-        //        return false;
-        //    }
-
-        //    double idf = (double) Math.Log10((double)totalDocumentCunt / (double)termDocumentCount);
-        //    tfidfValue = termFrequency * idf;
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Get Document Frequency for this termName, in how many document thsi term exist in storage
-        ///// </summary>
-        ///// <param name="termName"></param>
-        ///// <param name="documentFrequencyValue"></param>
-        ///// <returns></returns>
-        //public bool GetTermDocumentFrequency(string termName, out long termDocumentCount, out long totalDocumentCunt)
-        //{
-        //    termDocumentCount = 0;
-        //    totalDocumentCunt = 0;            
-        //    if (TfIdfStorage.GetTermDocumentFrequency(termName, out termDocumentCount, out totalDocumentCunt) == false)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
-            
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="termName"></param>
-        ///// <param name="totalDocumentCount">Total number of document in storage</param>
-        ///// <param name="minDocumentFrequencyValue">min document Frequency for some term - obiusly in most cease is 1</param>
-        ///// <param name="maxDocumentFrequencyValue">max document Frequency for some term - maksimum imposible count is totalDocumentCount</param>
-        ///// <returns></returns>
-        //public bool GetMinMaxDocumentFrequency(string termName, out long totalDocumentCount, out long minDocumentFrequencyValue, out long maxDocumentFrequencyValue)
-        //{
-        //    //TODO: implement it
-        //    totalDocumentCount = 0;
-        //    minDocumentFrequencyValue = 0; 
-        //    maxDocumentFrequencyValue = 0;
-        //    return false;
-        //}
     }    
 }

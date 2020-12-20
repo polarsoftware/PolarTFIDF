@@ -37,7 +37,6 @@ namespace Polar.ML.TfIdf
             totalDocumentCunt = 0;
             termDocumentCount = 0;
             return false;
-        }
-        
+        }        
     }
 }

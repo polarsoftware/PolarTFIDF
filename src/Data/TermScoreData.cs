@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Polar.ML.TfIdf
+﻿namespace Polar.ML.TfIdf
 {
     public class TermScoreData
     {       
         /// <summary>
-        /// Name of term 
+        /// Name of term. 
         /// </summary>
         public string Term;
 
         /// <summary>
-        /// TFIDF value
+        /// TFIDF value.
         /// </summary>
         public double TermScore;
     }

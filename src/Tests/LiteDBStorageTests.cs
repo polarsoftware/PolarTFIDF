@@ -1,8 +1,4 @@
-﻿using LiteDB;
-using System;
-using System.Collections.Generic;
-using Xunit;
-using System.Linq;
+﻿using Xunit;
 
 namespace Polar.ML.TfIdf
 {
@@ -12,7 +8,6 @@ namespace Polar.ML.TfIdf
         public void CreateDB()
         {
             LiteDBTfIdfStorageExt liteDBTfIdfStorageExt = new LiteDBTfIdfStorageExt("db1");
-
         }
     }
 }

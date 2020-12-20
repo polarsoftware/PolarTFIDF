@@ -11,7 +11,6 @@ namespace Polar.ML.TfIdf
         [Fact]
         public void AddGetDocumentTest()
         {
-
             TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
             string docName = "TestDoc";
 
@@ -185,9 +184,6 @@ namespace Polar.ML.TfIdf
             Assert.True(docs.Count == 2);
             Assert.True(docs[0]==docName1);
             Assert.True(docs[1]==docName2);
-
         }
-
     }
-
 }

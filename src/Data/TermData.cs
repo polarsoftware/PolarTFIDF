@@ -1,12 +1,11 @@
 ﻿using LiteDB;
-using System;
-using System.Collections.Generic;
 
 namespace Polar.ML.TfIdf
 {
     public class TermData
     {
         public string Id { get; set; } = ObjectId.NewObjectId().ToString();
+        
         /// <summary>
         /// Name of term 
         /// </summary>
