@@ -78,7 +78,7 @@ namespace Polar.ML.TfIdf
             var tsds = GetAllTermsInDocument(document);
             foreach (var tsd in tsds)
             {
-                var dtd = coll2.FindOne(x => x.Term == tsd.Term);
+                TermDocumentCountData dtd = coll2.FindOne(x => x.Term == tsd.Term);
                 dtd.Count--;
                 coll2.Update(dtd);
             }
@@ -96,7 +96,7 @@ namespace Polar.ML.TfIdf
         /// <returns>List of TermScoreData</returns>
         public List<TermScoreData> GetAllTermsInDocument(string document)
         {
-            var tsds = new List<TermScoreData>();
+            List<TermScoreData> tsds = new List<TermScoreData>();
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<DocumentTermsData>(TfIdfStorage.DocumentTermsColl);
             foreach (var term in coll.FindOne(x => x.Document == document).Terms)

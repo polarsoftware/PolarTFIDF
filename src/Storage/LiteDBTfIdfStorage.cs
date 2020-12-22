@@ -25,9 +25,8 @@ namespace Polar.ML.TfIdf
         public string DocumentTerms { get; set; } = nameof(DocumentTerms);
 
         string TfIdfDb =  nameof(TfIdfDb) + ".db";
-        
-        public string DocumentTermsColl = nameof(DocumentTermsColl);
-
+                
+        public string DocumentTermsColl = nameof(DocumentTermsColl);//{document, List<TermData>}
         /// <summary>
         /// Collection in database which contain TermDocumentCountData object
         /// </summary>

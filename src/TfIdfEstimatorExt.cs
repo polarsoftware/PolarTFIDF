@@ -7,7 +7,7 @@ namespace Polar.ML.TfIdf
     /// </summary>
     public class TfIdfEstimatorExt
     {
-        public LiteDBTfIdfStorageExt Storage { get; set; }
+        private LiteDBTfIdfStorageExt Storage { get; set; }
                 
 
         public List<TermData> Terms;//TODO: zasto ovo  postoji.. cemu ovo sluzi.. koji je plan s ovim?

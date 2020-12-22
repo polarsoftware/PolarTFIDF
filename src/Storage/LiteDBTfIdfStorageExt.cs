@@ -25,7 +25,7 @@ namespace Polar.ML.TfIdf
         public string _databaseName;
 
         //Collectiona names
-        public const string DocumentTerms = nameof(DocumentTerms);
+        public const string DocumentTerms = nameof(DocumentTerms);// {Document, List<TermData>}
         public const string TermDocumentCount = nameof(TermDocumentCount);//{term, count}
         public const string TermDocument = nameof(TermDocument);//{term, document}
         
@@ -35,10 +35,10 @@ namespace Polar.ML.TfIdf
         
         public LiteDatabase DB { get; set; }
                 
-        public ILiteCollection<DocumentTermsData> DocumentTermsColl { get; set; }
-        public ILiteCollection<TermDocumentCountData> TermDocumentCountColl { get; set; }
-        public ILiteCollection<TermDocumentData> TermDocumentColl { get; set; }
-                
+        public ILiteCollection<DocumentTermsData> DocumentTermsColl { get; set; } // {Document, List<TermData>}
+        public ILiteCollection<TermDocumentCountData> TermDocumentCountColl { get; set; }//{term, count}
+        public ILiteCollection<TermDocumentData> TermDocumentColl { get; set; }//{term, document}
+
         public void PostTermDocument(string termName, string documentName)
         {
         }
