@@ -65,13 +65,13 @@ namespace Polar.ML.TfIdf
             ConnectionString = new ConnectionString()
             {
                 Filename = PathDirRootDataBases,
-                Connection = ConnectionType.Shared,//TODO: is it best solution?
+                Connection = ConnectionType.Shared,//TODO: is it best solution? Probati sa ConnectionType.Direct
                 //ReadOnly = true
             };
 
             using var db = new LiteDatabase(ConnectionString);
             DocumentTermsColl = db.GetCollection<DocumentTermsData>(DocumentTerms);
-            DocumentTermsColl.EnsureIndex(nameof(DocumentTermsData.Document));//TODO staviti da je dokument id unique - ispitati ima li problema negdje radi toga
+            DocumentTermsColl.EnsureIndex(nameof(DocumentTermsData.Document));//TODO: SP: staviti da je dokument id unique - ispitati ima li problema negdje radi toga
 
             TermDocumentCountColl = db.GetCollection<TermDocumentCountData>(TermDocumentCount);
             TermDocumentCountColl.EnsureIndex(nameof(TermDocumentCountData.Term));

@@ -80,7 +80,7 @@ namespace Polar.ML.TfIdf
             var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
 
             // Get all docs except the one that we are looking the most similar to.
-            var docs = coll.FindAll().ToList();
+            var docs = coll.FindAll().ToList();//TODO: optimize it!!! - 2020-12-22T10:04:31
             docs.Remove(docs.Find(x => x.Document == document1));
 
             // Get similarity scores of all those documents.
@@ -98,11 +98,5 @@ namespace Polar.ML.TfIdf
             docScores.OrderByDescending(x => x.Score);
             return docScores.GetRange(0, numberOfDocuments);
         }
-
-
-
-
-
-
     }
 }
