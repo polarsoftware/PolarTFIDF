@@ -8,6 +8,24 @@ namespace Polar.ML.TfIdf
 {
     public static class DocumentSimilarity
     {
+
+        public static double DotProduct(List<double> v1, List<double> v2)
+        {
+            if (v1.Count != v2.Count)
+            {
+                throw new ArgumentException();
+            }
+            double value = 0;
+            for (int i = 0; i < v1.Count; i++)
+            {
+                value += v1[i] * v2[i];
+            }
+            return value;
+        }
+
+
+
+
         /// <summary>
         /// Gets the cosine similarity of vectors of keywords of two documents.
         /// TODO: dodati link na webu koji to objasnjava 
@@ -22,8 +40,8 @@ namespace Polar.ML.TfIdf
             var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
 
             // Get all keywords from the two documents and make a union of them.
-            var doc1 = coll.FindOne(docName1);
-            var doc2 = coll.FindOne(docName2);
+            var doc1 = coll.FindOne(x => x.Document==docName1);
+            var doc2 = coll.FindOne(x => x.Document == docName2);
             var keywords1 = doc1.Terms;
             var keywords2 = doc2.Terms;
             var set = new HashSet<string>();
@@ -46,9 +64,8 @@ namespace Polar.ML.TfIdf
             }
 
             // Calculate the cosine similarity. CosSimilarity(v1, v2) = dot(v1,v2) / (norm(v1) * norm(v2)) where v1 and v2 are vectors
-            var vect1 = new Vector<double>(list1.ToArray());
-            var vect2 = new Vector<double>(list2.ToArray());
-            double dot = Vector.Dot(vect1, vect2);
+
+            double dot = DotProduct(list1,list2);
             double norm1 = 0;
             double norm2 = 0;
             foreach (var item in list1)

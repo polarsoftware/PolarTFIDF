@@ -114,12 +114,14 @@ namespace Polar.ML.TfIdf
         /// <returns>Returns a TermsScoreData object</returns>
         public TermScoreData GetOneTermInDocument(string document, string term)
         {
+            //TODO check for bugs
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<DocumentTermsData>(TfIdfStorage.DocumentTermsColl);
             
             var doc = coll.FindOne(x => x.Document == document);
             long countOfTerms = doc.Terms.Sum(x => x.Count);
-            long countOfTerm = doc.Terms.Find(x => x.Term == term).Count;
+            var term2 = doc.Terms.Find(x => x.Term == term);
+            long countOfTerm = (term2 == null ? 0 : term2.Count);
             double termFrequency = countOfTerm / (double)countOfTerms;
 
             var coll2 = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);

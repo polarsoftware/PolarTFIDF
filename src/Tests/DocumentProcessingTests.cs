@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Polar.ML.TfIdf
 {
-    public class InsertingDocumentTests
+    public class DocumentProcessingTests
     {
         [Fact]
         public void AddGetDocumentTest()
@@ -180,10 +180,44 @@ namespace Polar.ML.TfIdf
             tfIdfEstimator.AddDocument(docName2, terms2);
             tfIdfEstimator.AddDocument(docName3, terms3);
 
-            var docs = tfIdfEstimator.Search("banana");
+            var docs = tfIdfEstimator.Search("banana",10);
             Assert.True(docs.Count == 2);
             Assert.True(docs[0]==docName1);
             Assert.True(docs[1]==docName2);
+        }
+
+
+        [Fact]
+        public void TwoDocumentsSimilarityTest()
+        {
+            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
+            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+
+            coll.DeleteAll();
+            coll2.DeleteAll();
+
+            string docName1 = "TestDoc1";
+            var terms1 = new List<TermData>()
+            {
+                new TermData(){ Term = "banana", Count = 1 },
+                new TermData(){ Term = "apple", Count = 2 },
+            };
+
+            string docName2 = "TestDoc2";
+            var terms2 = new List<TermData>()
+            {
+                new TermData(){ Term = "banana", Count = 1 },
+                new TermData(){ Term = "blueberry", Count = 5 }
+            };
+
+            tfIdfEstimator.AddDocument(docName1, terms1);
+            tfIdfEstimator.AddDocument(docName2, terms2);
+
+            double similarity = tfIdfEstimator.GetDocumentSimilarity(docName1, docName2);
+
+            //TODO MP: finish up docsimilarity tests
         }
     }
 }
