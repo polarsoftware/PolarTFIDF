@@ -136,10 +136,14 @@ namespace Polar.ML.TfIdf
             return tsd;
         }
 
-        public List<string> Search(string keyword)
+        /// <summary>
+        /// Takes a keyword and returns a set amount of documents in which that keyword is the most valuable.
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="numberOfDocs"></param>
+        /// <returns>List of document name strings</returns>
+        public List<string> Search(string keyword, int numberOfDocs)
         {
-            int numberOfDocs = 10;
-
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<DocumentTermsData>(TfIdfStorage.DocumentTermsColl);
             var docNames = new List<string>();
