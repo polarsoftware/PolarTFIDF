@@ -27,6 +27,10 @@ namespace Polar.ML.TfIdf
         string TfIdfDb =  nameof(TfIdfDb) + ".db";
         
         public string DocumentTermsColl = nameof(DocumentTermsColl);
+
+        /// <summary>
+        /// Collection in database which contain TermDocumentCountData object
+        /// </summary>
         public string TermDocumentCountColl = nameof(TermDocumentCountColl);//{term, count}
         public string TermDocumentColl = nameof(TermDocumentColl);//{term, document}
 
@@ -99,12 +103,12 @@ namespace Polar.ML.TfIdf
             }
         }
 
-        public void PostDocumentTerms(DocumentTermsData dtd) 
+        public void PostDocumentTerms(DocumentTermsData documentTermsData) 
         {            
             //2020-10-30T11:17:15 string coolectionName = "DocumentTerms" + "coll";
             using var db = new LiteDatabase(ConnectionString);
             var colldomaintask = db.GetCollection<DocumentTermsData>(DocumentTermsColl);//coolectionName
-            var docterms = colldomaintask.Insert(dtd);
+            var docterms = colldomaintask.Insert(documentTermsData);
         }          
 
         public long GetTotalDocumentCunt()

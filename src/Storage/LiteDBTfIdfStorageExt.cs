@@ -56,22 +56,22 @@ namespace Polar.ML.TfIdf
             
             Init();
         }
-
+                
         private void Init()
         {
             string dir = DirHandler.CreateDirInRootApp("data", "dbs");
-            string destinationFileNamePath = Path.Combine(dir, _databaseName);            
+            PathDirRootDataBases = Path.Combine(dir, _databaseName);            
 
             ConnectionString = new ConnectionString()
             {
-                Filename = destinationFileNamePath,
-                Connection = ConnectionType.Shared,
+                Filename = PathDirRootDataBases,
+                Connection = ConnectionType.Shared,//TODO: is it best solution?
                 //ReadOnly = true
             };
 
             using var db = new LiteDatabase(ConnectionString);
             DocumentTermsColl = db.GetCollection<DocumentTermsData>(DocumentTerms);
-            DocumentTermsColl.EnsureIndex(nameof(DocumentTermsData.Document));//TODO staviti da je dokument id unique
+            DocumentTermsColl.EnsureIndex(nameof(DocumentTermsData.Document));//TODO staviti da je dokument id unique - ispitati ima li problema negdje radi toga
 
             TermDocumentCountColl = db.GetCollection<TermDocumentCountData>(TermDocumentCount);
             TermDocumentCountColl.EnsureIndex(nameof(TermDocumentCountData.Term));
@@ -138,10 +138,11 @@ namespace Polar.ML.TfIdf
         /// <returns></returns>
         public int PutTermDocumentCounts(List<TermData> terms)
         {
-            lock (_lockerTermDocumentCountColl)
+            //TODO: document it why we lock if we user (Connection = ConnectionType.Shared) or we have plan not use share or LiteDB have bug about it? - 2020-12-22T09:18:47
+            lock (_lockerTermDocumentCountColl)            
             {
                 List<TermDocumentCountData> termDocumentCounts = new List<TermDocumentCountData>();
-                foreach (var term in terms)
+                foreach (TermData term in terms)
                 {
                     TermDocumentCountData termDocumentCountData = GetTermDocumentCount(term.Term);
                     if (termDocumentCountData == null)

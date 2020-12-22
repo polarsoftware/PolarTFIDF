@@ -1,11 +1,11 @@
 ﻿using LiteDB;
-using System;
 using System.Collections.Generic;
 
 namespace Polar.ML.TfIdf
 {
     public class DocumentTermsData
     {
+        //TODO: separate id generate from LiteDB implementation - 2020-12-22T08:45:44
         public string Id { get; set; } = ObjectId.NewObjectId().ToString();
 
         /// <summary>
@@ -14,9 +14,8 @@ namespace Polar.ML.TfIdf
         public string Document { get; set; }
 
         /// <summary>
-        /// List of Term object 
+        /// List of TermData object: {Term, Count}
         /// </summary>
         public List<TermData> Terms { get; set; }
-
     }
 }

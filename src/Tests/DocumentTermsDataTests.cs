@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Xunit;
 
 namespace Polar.ML.TfIdf
 {
     public class DocumentTermsDataTests
     {
+        /// <summary>
+        /// Create database, oen document with terms, store in database, check is storage correctly accept it.
+        /// </summary>
         [Fact]
         public void AddGetDocumentTest()
         {
@@ -28,7 +32,11 @@ namespace Polar.ML.TfIdf
             for (int i = 0; i < documentTermsData.Terms.Count; i++)
             {
                 Assert.True(documentTermsData.Terms[i].Term == terms[i].Term);
-            }            
+            }
+            //TODO: check is all term exist in TermDocumentCountColl - 2020-12-22T09:32:03
+
+            //Delete Database - in case of LiteDB we delete one file.
+            File.Delete(tfIdfEstimator.Storage.PathDirRootDataBases);
         }       
     }
 }

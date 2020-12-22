@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Polar.ML.TfIdf
+﻿namespace Polar.ML.TfIdf
 {
     public class DocumentSimilarityScoreData
     {
-        public string Document;
-        public double Score;
+        public string Document { get; set; }
+        public double Score { get; set; }
     }
 }

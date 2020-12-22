@@ -28,18 +28,22 @@ namespace Polar.ML.TfIdf
         public TfIdfEstimator() { }
 
         /// <summary>
-        /// Adds a new document al;ong with its terms to the database.
+        /// Adds a new document along with its terms to the database.
         /// </summary>
-        /// <param name="document"></param>
-        /// <param name="terms"></param>
+        /// <param name="document">Unique identifer of the document, like id of the document from other system or unique name.</param>
+        /// <param name="terms">List of TermData object from this document.</param>
         public void AddDocument(string document, List<TermData> terms)
         {
-            DocumentTermsData documentTermsData = new DocumentTermsData() {
+            DocumentTermsData documentTermsData = new DocumentTermsData() 
+            {
                 Document = document,
                 Terms = terms
             };            
+
             TfIdfStorage.PostDocumentTerms(documentTermsData);
 
+            //TODO: describe it!
+            //Find each term in???? and add count for this docuiment?
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);
             foreach (var term in terms)
@@ -59,8 +63,7 @@ namespace Polar.ML.TfIdf
                     tdcd.Count++;
                     coll.Update(tdcd);
                 }
-            }
-            
+            }            
         }
 
         /// <summary>

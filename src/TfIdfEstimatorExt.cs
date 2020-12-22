@@ -7,19 +7,20 @@ namespace Polar.ML.TfIdf
     /// </summary>
     public class TfIdfEstimatorExt
     {
-        private LiteDBTfIdfStorageExt _storage;
-        
-        public List<TermData> Terms;
-
-        public long SumTermsCount;
+        public LiteDBTfIdfStorageExt Storage { get; set; }
                 
+
+        public List<TermData> Terms;//TODO: zasto ovo  postoji.. cemu ovo sluzi.. koji je plan s ovim?
+
+        public long SumTermsCount;//TODO: zasto ovo  postoji.. cemu ovo sluzi.. koji je plan s ovim?
+
         public TfIdfEstimatorExt(string storageName)         
         {
-            _storage = new LiteDBTfIdfStorageExt(storageName);
+            Storage = new LiteDBTfIdfStorageExt(storageName);
         }
 
         /// <summary>
-        /// Adds a new document al;ong with its terms to the database.
+        /// Adds a new document along with its terms to the database.
         /// </summary>
         /// <param name="document"></param>
         /// <param name="terms"></param>
@@ -31,13 +32,13 @@ namespace Polar.ML.TfIdf
                 Terms = terms
             };
 
-            _storage.PostDocumentTerms(documentTermsData);
-            _storage.PutTermDocumentCounts(terms);
+            Storage.PostDocumentTerms(documentTermsData);
+            Storage.PutTermDocumentCounts(terms);
         }
 
         public DocumentTermsData GetDocument(string document)
         {
-            return _storage.GetDocumentTerm(document);
+            return Storage.GetDocumentTerm(document);
         }
        
     }    

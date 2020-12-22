@@ -10,6 +10,7 @@ namespace Polar.ML.TfIdf
     {
         /// <summary>
         /// Gets the cosine similarity of vectors of keywords of two documents.
+        /// TODO: dodati link na webu koji to objasnjava 
         /// </summary>
         /// <param name="docName1"></param>
         /// <param name="docName2"></param>
