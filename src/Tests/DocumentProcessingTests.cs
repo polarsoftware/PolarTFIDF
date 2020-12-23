@@ -193,9 +193,10 @@ namespace Polar.ML.TfIdf
 
         /// <summary>
         /// Testing the similarity calculating algorithm for two documents.
+        /// In this scenario terms1 is empty.
         /// </summary>
         [Fact]
-        public void TwoDocumentsSimilarityTest()
+        public void TwoDocumentsSimilarity1Test()
         {
             TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
             using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
@@ -205,11 +206,7 @@ namespace Polar.ML.TfIdf
             coll.DeleteAll();
             coll2.DeleteAll();
 
-            var terms1 = new List<TermData>()
-            {
-                new TermData(){ Term = banana, Count = 1 },
-                new TermData(){ Term = apple, Count = 2 },
-            };
+            var terms1 = new List<TermData>();
 
             var terms2 = new List<TermData>()
             {
@@ -221,8 +218,63 @@ namespace Polar.ML.TfIdf
             tfIdfEstimator.AddDocument(docName2, terms2);
 
             double similarity = tfIdfEstimator.GetDocumentSimilarity(docName1, docName2);
-
-            //TODO MP: finish up docsimilarity tests
+            Assert.True(similarity == 0);
         }
+
+        /// <summary>
+        /// Testing the similarity calculating algorithm for two documents.
+        /// In this scenario both terms1 and terms2 are empty.
+        /// </summary>
+        [Fact]
+        public void TwoDocumentsSimilarity2Test()
+        {
+            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
+            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+
+            coll.DeleteAll();
+            coll2.DeleteAll();
+
+            var terms1 = new List<TermData>();
+
+            var terms2 = new List<TermData>();
+
+            tfIdfEstimator.AddDocument(docName1, terms1);
+            tfIdfEstimator.AddDocument(docName2, terms2);
+
+            double similarity = tfIdfEstimator.GetDocumentSimilarity(docName1, docName2);
+            Assert.True(similarity == 0);
+        }
+
+        /// <summary>
+        /// Testing the similarity calculating algorithm for two documents.
+        /// In this scenario terms1 and terms2 are the same.
+        /// </summary>
+        [Fact]
+        public void TwoDocumentsSimilarity3Test()
+        {
+            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
+            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+
+            coll.DeleteAll();
+            coll2.DeleteAll();
+
+            var terms1 = new List<TermData>()
+            {
+
+            };
+
+            var terms2 = new List<TermData>();
+
+            tfIdfEstimator.AddDocument(docName1, terms1);
+            tfIdfEstimator.AddDocument(docName2, terms2);
+
+            double similarity = tfIdfEstimator.GetDocumentSimilarity(docName1, docName2);
+            Assert.True(similarity == 0);
+        }
+
     }
 }

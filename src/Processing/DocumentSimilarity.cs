@@ -79,7 +79,7 @@ namespace Polar.ML.TfIdf
             }
             norm1 = Math.Sqrt(norm1);
             norm2 = Math.Sqrt(norm2);
-            double similarity = dot / (norm1 * norm2);
+            double similarity = (norm1*norm2==0?0:dot / (norm1 * norm2));
 
             return similarity;
         }
