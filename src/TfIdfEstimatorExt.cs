@@ -80,7 +80,7 @@ namespace Polar.ML.TfIdf
             long countOfTerms = doc.Terms.Sum(x => x.Count);
             var term2 = doc.Terms.Find(x => x.Term == term);
             long countOfTerm = (term2 == null ? 0 : term2.Count);
-            double termFrequency = countOfTerm / (double)countOfTerms;
+            double termFrequency = (countOfTerms == 0 ? 0 : countOfTerm / (double)countOfTerms);
 
             int countOfDocs = Storage.TermDocumentCountColl.Count();
             long countOfDocsWithTerm = Storage.TermDocumentCountColl.FindOne(x => x.Term == term).Count;
