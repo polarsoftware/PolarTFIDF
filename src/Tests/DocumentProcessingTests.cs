@@ -264,16 +264,23 @@ namespace Polar.ML.TfIdf
 
             var terms1 = new List<TermData>()
             {
-
+                new TermData(){Term=banana,Count=2},
+                new TermData(){Term=blueberry,Count=3},
+                new TermData(){Term=apple,Count=7}
             };
 
-            var terms2 = new List<TermData>();
+            var terms2 = new List<TermData>()
+            {
+                new TermData(){Term=apple,Count=7},
+                new TermData(){Term=banana,Count=2},
+                new TermData(){Term=blueberry,Count=3},
+            };
 
             tfIdfEstimator.AddDocument(docName1, terms1);
             tfIdfEstimator.AddDocument(docName2, terms2);
 
             double similarity = tfIdfEstimator.GetDocumentSimilarity(docName1, docName2);
-            Assert.True(similarity == 0);
+            Assert.True(similarity == 1);
         }
 
     }
