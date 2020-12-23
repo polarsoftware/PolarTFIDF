@@ -2,6 +2,10 @@
 
 namespace Polar.ML.TfIdf
 {
+
+    /// <summary>
+    /// {Term, Count}
+    /// </summary>
     public class TermData
     {
         //TODO: separate id generate from LiteDB implementation - 2020-12-22T08:45:44

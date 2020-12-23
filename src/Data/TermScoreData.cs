@@ -1,5 +1,8 @@
 ﻿namespace Polar.ML.TfIdf
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class TermScoreData
     {       
         /// <summary>

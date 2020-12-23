@@ -24,11 +24,11 @@ namespace Polar.ML.TfIdf
         /// </summary>
         /// <param name="document"></param>
         /// <param name="terms"></param>
-        public void AddDocument(string document, List<TermData> terms)
+        public void AddDocument(string documentId, List<TermData> terms)
         {
             DocumentTermsData documentTermsData = new DocumentTermsData()
             {
-                Document = document,
+                Document = documentId,
                 Terms = terms
             };
 
@@ -40,6 +40,14 @@ namespace Polar.ML.TfIdf
         {
             return Storage.GetDocumentTerm(document);
         }
-       
+
+        /// <summary>
+        /// Remove document from storage and reduce term count on other storage.
+        /// </summary>
+        /// <param name="document"></param>
+        public void DeleteDocument(string documentId)
+        {
+            Storage.DeleteDocument(documentId);            
+        }
     }    
 }

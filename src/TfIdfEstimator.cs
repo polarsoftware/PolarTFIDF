@@ -73,19 +73,19 @@ namespace Polar.ML.TfIdf
         public void DeleteDocument(string document)
         {
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
-            var coll = db.GetCollection<DocumentTermsData>(TfIdfStorage.DocumentTermsColl);
-            var coll2 = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);
+            var documentTermsColl = db.GetCollection<DocumentTermsData>(TfIdfStorage.DocumentTermsColl);
+            var termDocumentCountColl = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);
             var tsds = GetAllTermsInDocument(document);
             foreach (var tsd in tsds)
             {
-                TermDocumentCountData dtd = coll2.FindOne(x => x.Term == tsd.Term);
+                TermDocumentCountData dtd = termDocumentCountColl.FindOne(x => x.Term == tsd.Term);
                 dtd.Count--;
-                coll2.Update(dtd);
+                termDocumentCountColl.Update(dtd);
             }
-            DocumentTermsData documentTermsData = coll.FindOne(d => d.Document == document);
+            DocumentTermsData documentTermsData = documentTermsColl.FindOne(d => d.Document == document);
             if (documentTermsData != null)
             {
-                coll.Delete(documentTermsData.Id);
+                documentTermsColl.Delete(documentTermsData.Id);
             }
         }
 

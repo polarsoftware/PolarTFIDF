@@ -3,7 +3,8 @@
 namespace Polar.ML.TfIdf
 {
     /// <summary>
-    /// TODO: describe it
+    /// Use for IDF(Inverse document frequency), to count the number of documents containing this term.
+    /// {Term, DocumentCount}
     /// </summary>
     public class TermDocumentCountData
     {
@@ -17,6 +18,7 @@ namespace Polar.ML.TfIdf
 
         /// <summary>
         /// Document count in which this term appears.
+        /// TODO: change name to DocumentCount
         /// </summary>
         public long Count { get; set; }
     }

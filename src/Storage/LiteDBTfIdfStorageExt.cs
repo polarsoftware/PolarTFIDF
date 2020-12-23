@@ -36,7 +36,7 @@ namespace Polar.ML.TfIdf
         public LiteDatabase DB { get; set; }
                 
         public ILiteCollection<DocumentTermsData> DocumentTermsColl { get; set; } // {Document, List<TermData>}
-        public ILiteCollection<TermDocumentCountData> TermDocumentCountColl { get; set; }//{term, count}
+        public ILiteCollection<TermDocumentCountData> TermDocumentCountColl { get; set; }//{term, DocumentCount}
         public ILiteCollection<TermDocumentData> TermDocumentColl { get; set; }//{term, document}
 
         public void PostTermDocument(string termName, string documentName)
@@ -94,7 +94,43 @@ namespace Polar.ML.TfIdf
             lock (_lockerDocumentTermsColl)
             {
                 return DocumentTermsColl.FindOne(x => x.Document == document);
-            }            
+            }
+        }
+
+        /// <summary>
+        /// Reduce number for each count in TermDocumentCountColl {term, count}
+        /// Delete  {Document, List<TermData>} from  DocumentTermsColl
+        /// ?Delete { term, documentId} from TermDocumentColl
+        /// 2020-12-23T10:12:38
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <returns></returns>
+        public bool DeleteDocument(string documentId)
+        {
+            
+            lock (_lockerDocumentTermsColl)
+            {
+                DocumentTermsData documentTermsData = DocumentTermsColl.FindOne(d => d.Document == documentId);
+                if (documentTermsData != null)
+                {
+                    //Reduce number for each count in TermDocumentCountColl {term, count}
+                    lock (_lockerTermDocumentCountColl)
+                    {
+                        foreach (TermData termData in documentTermsData.Terms)
+                        {
+                            TermDocumentCountData termDocumentCountData = TermDocumentCountColl.FindOne(d => d.Term == termData.Term);
+                            if (termDocumentCountData != null)
+                            {
+                                termDocumentCountData.Count--;
+                                TermDocumentCountColl.Update(termDocumentCountData);
+                            }
+                        }
+                        //Delete  {Document, List<TermData>} from  DocumentTermsColl
+                        return DocumentTermsColl.Delete(documentTermsData.Id);                                               
+                    }                    
+                }
+                return false;
+            }
         }
 
         public int CountDocumentTerms(string document)
