@@ -90,7 +90,7 @@ namespace Polar.ML.TfIdf
         }
 
         /// <summary>
-        /// Takes a names of the document from which to get all terms with their tf-idf values.
+        /// Takes a id of the document from which to get all terms with their tf-idf values.
         /// </summary>
         /// <param name="document"></param>
         /// <returns>List of TermScoreData</returns>
