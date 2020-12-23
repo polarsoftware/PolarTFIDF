@@ -130,9 +130,9 @@ namespace Polar.ML.TfIdf
             var coll2 = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);
             int countOfDocs = coll.Count();
             long countOfDocsWithTerm = coll2.FindOne(x => x.Term == term).Count;
-            double inverseDocumentFrequency = Math.Log10(countOfDocs / (double)countOfDocsWithTerm);
+            double inverseDocumentFrequencySmooth = Math.Log10(countOfDocs / (double)(countOfDocsWithTerm+1))+1;
 
-            double tfidfValue = termFrequency * inverseDocumentFrequency;
+            double tfidfValue = termFrequency * inverseDocumentFrequencySmooth;
             var tsd = new TermScoreData
             {
                 Term = term,
