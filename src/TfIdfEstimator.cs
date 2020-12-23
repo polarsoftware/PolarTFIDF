@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Polar.ML.TfIdf
 {
+
+    //TODO: move function bodies to new classes, get 'em outta here
+
     /// <summary>
     /// 2020-10-06T12:14:34
     /// </summary>
@@ -122,7 +125,7 @@ namespace Polar.ML.TfIdf
             long countOfTerms = doc.Terms.Sum(x => x.Count);
             var term2 = doc.Terms.Find(x => x.Term == term);
             long countOfTerm = (term2 == null ? 0 : term2.Count);
-            double termFrequency = countOfTerm / (double)countOfTerms;
+            double termFrequency = (countOfTerms==0?0:countOfTerm / (double)countOfTerms);
 
             var coll2 = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);
             int countOfDocs = coll.Count();
