@@ -8,28 +8,40 @@ namespace Polar.ML.TfIdf
 {
     public class DocumentProcessingTests
     {
+
+
+        string docName1 = nameof(docName1);
+        string docName2 = nameof(docName2);
+        string docName3 = nameof(docName3);
+        string banana = nameof(banana);
+        string apple = nameof(apple);
+        string blueberry = nameof(blueberry);
+        string cherry = nameof(cherry);
+        string strawberry = nameof(strawberry);
+
+
         [Fact]
         public void AddGetDocumentTest()
         {
             TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
-            string docName = "TestDoc";
+
 
             var terms = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "apple", Count = 2 },
-                new TermData(){ Term = "strawberry", Count = 3 },
-                new TermData(){ Term = "cherry", Count = 4 },
-                new TermData(){ Term = "bluberry", Count = 5 }
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = apple, Count = 2 },
+                new TermData(){ Term = strawberry, Count = 3 },
+                new TermData(){ Term = cherry, Count = 4 },
+                new TermData(){ Term = blueberry, Count = 5 }
             };
 
-            tfIdfEstimator.AddDocument(docName, terms);
+            tfIdfEstimator.AddDocument(docName1, terms);
 
             using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
             var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
             //int count = coll.Count();            
-            var docterms = coll.FindOne(x => x.Document == docName);
+            var docterms = coll.FindOne(x => x.Document == docName1);
                         
             for (int i=0;i<terms.Count; i++)
             {
@@ -43,25 +55,21 @@ namespace Polar.ML.TfIdf
         public void TfIdfTest()
         {
             TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
-
-            string docName1 = "TestDoc1";
             var terms1 = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "apple", Count = 2 },
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = apple, Count = 2 },
             };
 
-            string docName2 = "TestDoc2";
             var terms2 = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "bluberry", Count = 5 }
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = blueberry, Count = 5 }
             };
 
-            string docName3 = "TestDoc3";
             var terms3 = new List<TermData>()
             {
-                new TermData(){ Term = "strawberry", Count = 3 },
+                new TermData(){ Term = strawberry, Count = 3 },
             };
 
             tfIdfEstimator.AddDocument(docName1, terms1);
@@ -104,24 +112,21 @@ namespace Polar.ML.TfIdf
             coll.DeleteAll();
             coll2.DeleteAll();
 
-            string docName1 = "TestDoc1";
             var terms1 = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "apple", Count = 2 },
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = apple, Count = 2 },
             };
 
-            string docName2 = "TestDoc2";
             var terms2 = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "blueberry", Count = 5 }
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = blueberry, Count = 5 }
             };
 
-            string docName3 = "TestDoc3";
             var terms3 = new List<TermData>()
             {
-                new TermData(){ Term = "strawberry", Count = 3 },
+                new TermData(){ Term = strawberry, Count = 3 },
             };
 
             tfIdfEstimator.AddDocument(docName1, terms1);
@@ -136,10 +141,10 @@ namespace Polar.ML.TfIdf
             Assert.True(docs.Find(x => x.Document == docName1) != null);
             Assert.True(docs.Find(x => x.Document == docName2) == null);
             Assert.True(docs.Find(x => x.Document == docName3) != null);
-            Assert.True(terms.Find(x => x.Term == "banana").Count == 1);
-            Assert.True(terms.Find(x => x.Term == "blueberry").Count == 0);
-            Assert.True(terms.Find(x => x.Term == "strawberry").Count == 1);
-            Assert.True(terms.Find(x => x.Term == "apple").Count == 1);
+            Assert.True(terms.Find(x => x.Term == banana).Count == 1);
+            Assert.True(terms.Find(x => x.Term == blueberry).Count == 0);
+            Assert.True(terms.Find(x => x.Term == strawberry).Count == 1);
+            Assert.True(terms.Find(x => x.Term == apple).Count == 1);
 
             coll.DeleteAll();
             coll2.DeleteAll();
@@ -156,37 +161,39 @@ namespace Polar.ML.TfIdf
             coll.DeleteAll();
             coll2.DeleteAll();
 
-            string docName1 = "TestDoc1";
             var terms1 = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "apple", Count = 2 },
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = apple, Count = 2 },
             };
 
-            string docName2 = "TestDoc2";
             var terms2 = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "blueberry", Count = 5 }
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = blueberry, Count = 5 }
             };
 
-            string docName3 = "TestDoc3";
             var terms3 = new List<TermData>()
             {
-                new TermData(){ Term = "strawberry", Count = 3 },
+                new TermData(){ Term = strawberry, Count = 3 },
             };
 
             tfIdfEstimator.AddDocument(docName1, terms1);
             tfIdfEstimator.AddDocument(docName2, terms2);
             tfIdfEstimator.AddDocument(docName3, terms3);
 
-            var docs = tfIdfEstimator.Search("banana",10);
+            var docs = tfIdfEstimator.Search(banana,10);
             Assert.True(docs.Count == 2);
             Assert.True(docs[0]==docName1);
             Assert.True(docs[1]==docName2);
         }
 
 
+
+
+        /// <summary>
+        /// Testing the similarity calculating algorithm for two documents.
+        /// </summary>
         [Fact]
         public void TwoDocumentsSimilarityTest()
         {
@@ -198,18 +205,16 @@ namespace Polar.ML.TfIdf
             coll.DeleteAll();
             coll2.DeleteAll();
 
-            string docName1 = "TestDoc1";
             var terms1 = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "apple", Count = 2 },
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = apple, Count = 2 },
             };
 
-            string docName2 = "TestDoc2";
             var terms2 = new List<TermData>()
             {
-                new TermData(){ Term = "banana", Count = 1 },
-                new TermData(){ Term = "blueberry", Count = 5 }
+                new TermData(){ Term = banana, Count = 1 },
+                new TermData(){ Term = blueberry, Count = 5 }
             };
 
             tfIdfEstimator.AddDocument(docName1, terms1);
