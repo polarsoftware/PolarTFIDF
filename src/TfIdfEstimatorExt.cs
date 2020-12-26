@@ -12,7 +12,6 @@ namespace Polar.ML.TfIdf
     {
         public LiteDBTfIdfStorageExt Storage { get; set; }
                 
-
         public List<TermData> Terms;//TODO: zasto ovo  postoji.. cemu ovo sluzi.. koji je plan s ovim?
 
         public long SumTermsCount;//TODO: zasto ovo  postoji.. cemu ovo sluzi.. koji je plan s ovim?
@@ -82,11 +81,11 @@ namespace Polar.ML.TfIdf
             long countOfTerm = (term2 == null ? 0 : term2.Count);
             double termFrequency = (countOfTerms == 0 ? 0 : countOfTerm / (double)countOfTerms);
 
-            int countOfDocs = Storage.TermDocumentCountColl.Count();
-            long countOfDocsWithTerm = Storage.TermDocumentCountColl.FindOne(x => x.Term == term).Count;
-            double inverseDocumentFrequency = Math.Log10(countOfDocs / (double)countOfDocsWithTerm);
+            int countOfDocs = Storage.DocumentTermsColl.Count();
+            long countOfDocsWithTerm = Storage.TermDocumentCountColl.FindOne(x => x.Term == term).Count;            
+            double inverseDocumentFrequencySmooth = Math.Log10(countOfDocs / (double)(countOfDocsWithTerm + 1d)) + 1d;
 
-            double tfidfValue = termFrequency * inverseDocumentFrequency;
+            double tfidfValue = termFrequency * inverseDocumentFrequencySmooth;
             var tsd = new TermScoreData
             {
                 Term = term,
@@ -139,10 +138,22 @@ namespace Polar.ML.TfIdf
         /// <param name="docName2"></param>
         /// <param name="tfIdfEstimator"></param>
         /// <returns>Cosine similarity</returns>
-        //public double GetDocumentSimilarity(string docName1, string docName2)
-        //{
-        //    return DocumentSimilarity.GetDocumentSimilarity(docName1, docName2, this);
-        //}
+        public double GetDocumentSimilarity(string docName1, string docName2)
+        {
+            return DocumentSimilarity.GetDocumentSimilarityExt(docName1, docName2, this);
+        }
+
+        /// <summary>
+        /// Returns top N most similar documents to the first document along with its cosine similarities.
+        /// </summary>
+        /// <param name="document1"></param>
+        /// <param name="numberOfDocuments"></param>
+        /// <param name="tfIdfEstimator"></param>
+        /// <returns>List of most similar documents</returns>
+        public List<DocumentSimilarityScoreData> GetSimilarDocuments(string document1, int numberOfDocuments)
+        {
+            return DocumentSimilarity.GetSimilarDocuments(document1, numberOfDocuments, this);
+        }
 
     }
 }

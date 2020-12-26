@@ -1,15 +1,15 @@
-﻿using LiteDB;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Xunit;
+using LiteDB;
 using System.Linq;
+using Polar.ML.TfIdf;
 
-namespace Polar.ML.TfIdf
+namespace Polar.ML.TfIdf.Test
 {
     public class DocumentProcessingTests
     {
-
-
         string docName1 = nameof(docName1);
         string docName2 = nameof(docName2);
         string docName3 = nameof(docName3);
@@ -19,12 +19,10 @@ namespace Polar.ML.TfIdf
         string cherry = nameof(cherry);
         string strawberry = nameof(strawberry);
 
-
         [Fact]
         public void AddGetDocumentTest()
         {
-            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
-
+            TfIdfEstimatorExt tfIdfEstimator = new TfIdfEstimatorExt(Guid.NewGuid().ToString("N"));
 
             var terms = new List<TermData>()
             {
@@ -37,24 +35,26 @@ namespace Polar.ML.TfIdf
 
             tfIdfEstimator.AddDocument(docName1, terms);
 
-            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
-            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
-            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+            //using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            //var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            //var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
             //int count = coll.Count();            
-            var docterms = coll.FindOne(x => x.Document == docName1);
+            var docterms = tfIdfEstimator.Storage.DocumentTermsColl.FindOne(x => x.Document == docName1);
                         
             for (int i=0;i<terms.Count; i++)
             {
                 Assert.True(docterms.Terms[i].Term == terms[i].Term);
             }
-            coll.DeleteAll();
-            coll2.DeleteAll();
+            //coll.DeleteAll();
+            //coll2.DeleteAll();
+            //Delete Database - in case of LiteDB we delete one file.
+            File.Delete(tfIdfEstimator.Storage.PathDirRootDataBases);
         }
 
         [Fact]
         public void TfIdfTest()
         {
-            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
+            TfIdfEstimatorExt tfIdfEstimator = new TfIdfEstimatorExt(Guid.NewGuid().ToString("N"));
             var terms1 = new List<TermData>()
             {
                 new TermData(){ Term = banana, Count = 1 },
@@ -80,13 +80,14 @@ namespace Polar.ML.TfIdf
             var t2 = tfIdfEstimator.GetAllTermsInDocument(docName2);
             var t3 = tfIdfEstimator.GetAllTermsInDocument(docName3);
 
-            double banana1 = (1d / 3d) * Math.Log10(3d / 2d);
-            double apple1 = (2d / 3d) * Math.Log10(3d / 1d);
+            //TODO: maybe need new formula - SP: 2020-12-26T09:11:42
+            double banana1 = (1d / 3d) * (Math.Log10(3d/(2d+1d)) + 1d);
+            double apple1 = (2d / 3d) * (Math.Log10(3d/(1d + 1d)) + 1d);
 
-            double banana2 = (1d / 6d) * Math.Log10(3d / 2d);
-            double blueberry2 = (5d / 6d) * Math.Log10(3d / 1d);
+            double banana2 = (1d / 6d) * (Math.Log10(3d/(2d + 1d)) + 1d);
+            double blueberry2 = (5d / 6d) * (Math.Log10(3d/(1d + 1d)) + 1d);
 
-            double strawberry3 = (1d / 1d) * Math.Log10(3d / 1d);
+            double strawberry3 = (1d / 1d) * (Math.Log10(3d/(1d + 1d)) + 1d);
 
             Assert.True(t1[0].TermScore == banana1);
             Assert.True(t1[1].TermScore == apple1);
@@ -94,23 +95,24 @@ namespace Polar.ML.TfIdf
             Assert.True(t2[1].TermScore == blueberry2);
             Assert.True(t3[0].TermScore == strawberry3);
 
-            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
-            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
-            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
-            coll.DeleteAll();
-            coll2.DeleteAll();
+            //using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            //var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            //var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+            //coll.DeleteAll();
+            //coll2.DeleteAll();
+            File.Delete(tfIdfEstimator.Storage.PathDirRootDataBases);
         }
 
         [Fact]
         public void DeleteDocumentTest()
         {
-            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
-            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
-            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
-            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
-
-            coll.DeleteAll();
-            coll2.DeleteAll();
+            TfIdfEstimatorExt tfIdfEstimator = new TfIdfEstimatorExt(Guid.NewGuid().ToString("N"));
+            //using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            //var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            //var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+            //
+            //coll.DeleteAll();
+            //coll2.DeleteAll();
 
             var terms1 = new List<TermData>()
             {
@@ -135,8 +137,8 @@ namespace Polar.ML.TfIdf
 
             tfIdfEstimator.DeleteDocument(docName2);
 
-            var docs = coll.FindAll().ToList();
-            var terms = coll2.FindAll().ToList();
+            var docs = tfIdfEstimator.Storage.DocumentTermsColl.FindAll().ToList();            
+            var terms = tfIdfEstimator.Storage.TermDocumentCountColl.FindAll().ToList();
 
             Assert.True(docs.Find(x => x.Document == docName1) != null);
             Assert.True(docs.Find(x => x.Document == docName2) == null);
@@ -146,20 +148,19 @@ namespace Polar.ML.TfIdf
             Assert.True(terms.Find(x => x.Term == strawberry).Count == 1);
             Assert.True(terms.Find(x => x.Term == apple).Count == 1);
 
-            coll.DeleteAll();
-            coll2.DeleteAll();
+            File.Delete(tfIdfEstimator.Storage.PathDirRootDataBases);
         }
 
         [Fact]
         public void SearchTest()
         {
-            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
-            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
-            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
-            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
-
-            coll.DeleteAll();
-            coll2.DeleteAll();
+            TfIdfEstimatorExt tfIdfEstimator = new TfIdfEstimatorExt(Guid.NewGuid().ToString("N"));
+            //using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            //var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            //var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+            //
+            //coll.DeleteAll();
+            //coll2.DeleteAll();
 
             var terms1 = new List<TermData>()
             {
@@ -186,10 +187,9 @@ namespace Polar.ML.TfIdf
             Assert.True(docs.Count == 2);
             Assert.True(docs[0]==docName1);
             Assert.True(docs[1]==docName2);
+
+            File.Delete(tfIdfEstimator.Storage.PathDirRootDataBases);
         }
-
-
-
 
         /// <summary>
         /// Testing the similarity calculating algorithm for two documents.
@@ -198,13 +198,13 @@ namespace Polar.ML.TfIdf
         [Fact]
         public void TwoDocumentsSimilarity1Test()
         {
-            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
-            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
-            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
-            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
-
-            coll.DeleteAll();
-            coll2.DeleteAll();
+            TfIdfEstimatorExt tfIdfEstimator = new TfIdfEstimatorExt(Guid.NewGuid().ToString("N"));
+            //TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
+            //using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            //var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            //var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+            //coll.DeleteAll();
+            //coll2.DeleteAll();
 
             var terms1 = new List<TermData>();
 
@@ -219,6 +219,7 @@ namespace Polar.ML.TfIdf
 
             double similarity = tfIdfEstimator.GetDocumentSimilarity(docName1, docName2);
             Assert.True(similarity == 0);
+            File.Delete(tfIdfEstimator.Storage.PathDirRootDataBases);
         }
 
         /// <summary>
@@ -228,13 +229,13 @@ namespace Polar.ML.TfIdf
         [Fact]
         public void TwoDocumentsSimilarity2Test()
         {
-            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
-            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
-            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
-            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
-
-            coll.DeleteAll();
-            coll2.DeleteAll();
+            TfIdfEstimatorExt tfIdfEstimator = new TfIdfEstimatorExt(Guid.NewGuid().ToString("N"));
+            //TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
+            //using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            //var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            //var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+            //coll.DeleteAll();
+            //coll2.DeleteAll();
 
             var terms1 = new List<TermData>();
 
@@ -245,6 +246,7 @@ namespace Polar.ML.TfIdf
 
             double similarity = tfIdfEstimator.GetDocumentSimilarity(docName1, docName2);
             Assert.True(similarity == 0);
+            File.Delete(tfIdfEstimator.Storage.PathDirRootDataBases);
         }
 
         /// <summary>
@@ -254,13 +256,13 @@ namespace Polar.ML.TfIdf
         [Fact]
         public void TwoDocumentsSimilarity3Test()
         {
-            TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
-            using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
-            var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
-            var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
-
-            coll.DeleteAll();
-            coll2.DeleteAll();
+            TfIdfEstimatorExt tfIdfEstimator = new TfIdfEstimatorExt(Guid.NewGuid().ToString("N"));
+            //TfIdfEstimator tfIdfEstimator = new TfIdfEstimator();
+            //using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
+            //var coll = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
+            //var coll2 = db.GetCollection<TermDocumentCountData>(tfIdfEstimator.TfIdfStorage.TermDocumentCountColl);
+            //coll.DeleteAll();
+            //coll2.DeleteAll();
 
             var terms1 = new List<TermData>()
             {
@@ -281,7 +283,7 @@ namespace Polar.ML.TfIdf
 
             double similarity = tfIdfEstimator.GetDocumentSimilarity(docName1, docName2);
             Assert.True(similarity == 1);
+            File.Delete(tfIdfEstimator.Storage.PathDirRootDataBases);
         }
-
     }
 }

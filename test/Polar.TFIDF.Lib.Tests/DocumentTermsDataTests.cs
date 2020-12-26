@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
+using Polar.ML.TfIdf;
 
-namespace Polar.ML.TfIdf
+namespace Polar.ML.TfIdf.Test
 {
     public class DocumentTermsDataTests
     {
