@@ -111,9 +111,9 @@ namespace Polar.ML.TfIdf
             foreach (var doc in documentTermsDatas)
             {
                 bool has = false;
-                foreach (var term in doc.Terms)
+                foreach (var term1 in doc.Terms)
                 {
-                    if (term.Term == term)
+                    if (term1.Term == term)
                     {
                         var tsd = GetOneTermInDocument(doc.Document, term);
                         docsWithTerm.Add(doc.Document, tsd.TermScore);
