@@ -25,22 +25,22 @@ namespace Polar.ML.TfIdf
         /// Adds a new document along with its terms to the database.
         /// </summary>
         /// <param name="document"></param>
-        /// <param name="terms"></param>
-        public void AddDocument(string documentId, List<TermData> terms)
+        /// <param name="documentTerms"></param>
+        public void AddDocument(string documentId, List<TermData> documentTerms)
         {
             DocumentTermsData documentTermsData = new DocumentTermsData()
             {
                 Document = documentId,
-                Terms = terms
+                Terms = documentTerms
             };
 
             Storage.PostDocumentTerms(documentTermsData);
-            Storage.PutTermDocumentCounts(terms);
+            Storage.PutTermDocumentCounts(documentTerms);
         }
 
-        public DocumentTermsData GetDocument(string document)
+        public DocumentTermsData GetDocument(string documentId)
         {
-            return Storage.GetDocumentTerm(document);
+            return Storage.GetDocumentTerm(documentId);
         }
 
         /// <summary>
@@ -55,14 +55,14 @@ namespace Polar.ML.TfIdf
         /// <summary>
         /// Takes a id of the document from which to get all terms with their tf-idf values.
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="documentId"></param>
         /// <returns>List of TermScoreData</returns>
-        public List<TermScoreData> GetAllTermsInDocument(string document)
+        public List<TermScoreData> GetAllTermsInDocument(string documentId)
         {
             List<TermScoreData> tsds = new List<TermScoreData>();
-            foreach (var term in Storage.DocumentTermsColl.FindOne(x => x.Document == document).Terms)
+            foreach (var term in Storage.DocumentTermsColl.FindOne(x => x.Document == documentId).Terms)
             {
-                tsds.Add(GetOneTermInDocument(document, term.Term));
+                tsds.Add(GetOneTermInDocument(documentId, term.Term));
             }
             return tsds;// {term, tfidf score}
         }
@@ -70,12 +70,12 @@ namespace Polar.ML.TfIdf
         /// <summary>
         /// Takes a names of the document from which to get a specific term with its tf-idf value.
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="documentId"></param>
         /// <param name="term"></param>
         /// <returns>Returns a TermsScoreData object</returns>
-        public TermScoreData GetOneTermInDocument(string document, string term)
+        public TermScoreData GetOneTermInDocument(string documentId, string term)
         {                        
-            var doc = Storage.DocumentTermsColl.FindOne(x => x.Document == document);
+            var doc = Storage.DocumentTermsColl.FindOne(x => x.Document == documentId);
             long countOfTerms = doc.Terms.Sum(x => x.Count);
             var term2 = doc.Terms.Find(x => x.Term == term);
             long countOfTerm = (term2 == null ? 0 : term2.Count);
@@ -97,10 +97,10 @@ namespace Polar.ML.TfIdf
         /// <summary>
         /// Takes a keyword and returns a set amount of documents in which that keyword is the most valuable.
         /// </summary>
-        /// <param name="keyword"></param>
+        /// <param name="term"></param>
         /// <param name="numberOfDocs"></param>
         /// <returns>List of documentId strings</returns>
-        public List<string> Search(string keyword, int numberOfDocs)
+        public List<string> Search(string term, int numberOfDocs)
         {
             //using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             //var coll = db.GetCollection<DocumentTermsData>(TfIdfStorage.DocumentTermsColl);
@@ -113,9 +113,9 @@ namespace Polar.ML.TfIdf
                 bool has = false;
                 foreach (var term in doc.Terms)
                 {
-                    if (term.Term == keyword)
+                    if (term.Term == term)
                     {
-                        var tsd = GetOneTermInDocument(doc.Document, keyword);
+                        var tsd = GetOneTermInDocument(doc.Document, term);
                         docsWithTerm.Add(doc.Document, tsd.TermScore);
                         has = true;
                     }
@@ -134,25 +134,25 @@ namespace Polar.ML.TfIdf
         /// <summary>
         /// Gets the cosine similarity of vectors of keywords of two documents.
         /// </summary>
-        /// <param name="docName1"></param>
-        /// <param name="docName2"></param>
+        /// <param name="documentId1"></param>
+        /// <param name="documentId2"></param>
         /// <param name="tfIdfEstimator"></param>
         /// <returns>Cosine similarity</returns>
-        public double GetDocumentSimilarity(string docName1, string docName2)
+        public double GetDocumentSimilarity(string documentId1, string documentId2)
         {
-            return DocumentSimilarity.GetDocumentSimilarityExt(docName1, docName2, this);
+            return DocumentSimilarity.GetDocumentSimilarityExt(documentId1, documentId2, this);
         }
 
         /// <summary>
         /// Returns top N most similar documents to the first document along with its cosine similarities.
         /// </summary>
-        /// <param name="document1"></param>
+        /// <param name="documentId"></param>
         /// <param name="numberOfDocuments"></param>
         /// <param name="tfIdfEstimator"></param>
         /// <returns>List of most similar documents</returns>
-        public List<DocumentSimilarityScoreData> GetSimilarDocuments(string document1, int numberOfDocuments)
+        public List<DocumentSimilarityScoreData> GetSimilarDocuments(string documentId, int numberOfDocuments)
         {
-            return DocumentSimilarity.GetSimilarDocuments(document1, numberOfDocuments, this);
+            return DocumentSimilarity.GetSimilarDocuments(documentId, numberOfDocuments, this);
         }
 
     }
