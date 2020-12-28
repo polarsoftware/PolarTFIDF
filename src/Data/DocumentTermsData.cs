@@ -1,15 +1,14 @@
-﻿using LiteDB;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Polar.ML.TfIdf
 {
     public class DocumentTermsData
-    {
-        //TODO: separate id generate from LiteDB implementation - 2020-12-22T08:45:44
-        public string Id { get; set; } = ObjectId.NewObjectId().ToString();
+    {     
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
 
         /// <summary>
-        /// Document name.
+        /// Identificator of document. Mostly it ia a foringer key from database of user of this library.
         /// </summary>
         public string Document { get; set; }
 
