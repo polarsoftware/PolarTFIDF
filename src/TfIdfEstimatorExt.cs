@@ -163,7 +163,7 @@ namespace Polar.ML.TfIdf
             }
 
             sortedList.AddRange(docsWithTerm.Keys);
-            sortedList.OrderByDescending(x => docsWithTerm[x]);
+            sortedList = sortedList.OrderByDescending(x => docsWithTerm[x]).ToList();
             return sortedList.GetRange(0, Math.Min(numberOfDocs, sortedList.Count));
         }
 
