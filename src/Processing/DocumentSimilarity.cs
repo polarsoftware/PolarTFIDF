@@ -25,18 +25,18 @@ namespace Polar.ML.TfIdf
         /// Gets the cosine similarity of vectors of keywords of two documents.
         /// TODO: dodati link na webu koji to objasnjava 
         /// </summary>
-        /// <param name="docName1"></param>
-        /// <param name="docName2"></param>
+        /// <param name="documentId1"></param>
+        /// <param name="documentId2"></param>
         /// <param name="tfIdfEstimator"></param>
         /// <returns>Cosine similarity</returns>
-        public static double GetDocumentSimilarityExt(string docName1, string docName2, TfIdfEstimatorExt tfIdfEstimator)
+        public static double GetDocumentSimilarityExt(string documentId1, string documentId2, TfIdfEstimatorExt tfIdfEstimator)
         {
             //using var db = new LiteDatabase(tfIdfEstimator.TfIdfStorage.ConnectionString);
             //var documentTermsColl = db.GetCollection<DocumentTermsData>(tfIdfEstimator.TfIdfStorage.DocumentTermsColl);
             
             // Get all keywords from the two documents and make a union of them.
-            var doc1 = tfIdfEstimator.Storage.DocumentTermsColl.FindOne(x => x.Document == docName1);
-            var doc2 = tfIdfEstimator.Storage.DocumentTermsColl.FindOne(x => x.Document == docName2);
+            var doc1 = tfIdfEstimator.Storage.DocumentTermsColl.FindOne(x => x.Document == documentId1);
+            var doc2 = tfIdfEstimator.Storage.DocumentTermsColl.FindOne(x => x.Document == documentId2);
             var keywords1 = doc1.Terms;
             var keywords2 = doc2.Terms;
             var set = new HashSet<string>();
@@ -54,8 +54,8 @@ namespace Polar.ML.TfIdf
             var list2 = new List<double>();
             foreach (var keyword in set)
             {
-                list1.Add(tfIdfEstimator.GetOneTermInDocument(docName1, keyword).TermScore);
-                list2.Add(tfIdfEstimator.GetOneTermInDocument(docName2, keyword).TermScore);
+                list1.Add(tfIdfEstimator.GetOneTermInDocument(documentId1, keyword).TermScore);
+                list2.Add(tfIdfEstimator.GetOneTermInDocument(documentId2, keyword).TermScore);
             }
 
             // Calculate the cosine similarity. CosSimilarity(v1, v2) = dot(v1,v2) / (norm(v1) * norm(v2)) where v1 and v2 are vectors

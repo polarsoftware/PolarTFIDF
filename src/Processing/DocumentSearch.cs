@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PolarTFIDF.Processing
+namespace PolarTFIDF.ML.TfIdf
 {
     class DocumentSearch
     {
+        
     }
 }
