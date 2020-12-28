@@ -4,7 +4,6 @@ using System.IO;
 using Xunit;
 using LiteDB;
 using System.Linq;
-using Polar.ML.TfIdf;
 
 namespace Polar.ML.TfIdf.Test
 {
@@ -79,8 +78,7 @@ namespace Polar.ML.TfIdf.Test
             var t1 = tfIdfEstimator.GetAllTermsInDocument(docName1);
             var t2 = tfIdfEstimator.GetAllTermsInDocument(docName2);
             var t3 = tfIdfEstimator.GetAllTermsInDocument(docName3);
-
-            //TODO: maybe need new formula - SP: 2020-12-26T09:11:42
+                        
             double banana1 = (1d / 3d) * (Math.Log10(3d/(2d+1d)) + 1d);
             double apple1 = (2d / 3d) * (Math.Log10(3d/(1d + 1d)) + 1d);
 

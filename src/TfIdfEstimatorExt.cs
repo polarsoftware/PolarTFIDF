@@ -11,10 +11,9 @@ namespace Polar.ML.TfIdf
     public class TfIdfEstimatorExt
     {
         public LiteDBTfIdfStorageExt Storage { get; set; }
-                
-        public List<TermData> Terms;//TODO: zasto ovo  postoji.. cemu ovo sluzi.. koji je plan s ovim?
 
-        public long SumTermsCount;//TODO: zasto ovo  postoji.. cemu ovo sluzi.. koji je plan s ovim?
+        //2020-12-28T08:40:26 public List<TermData> Terms;//
+        //2020-12-28T08:40:26  public long SumTermsCount;//
 
         public TfIdfEstimatorExt(string storageName)         
         {
@@ -74,10 +73,10 @@ namespace Polar.ML.TfIdf
         /// <param name="term"></param>
         /// <returns>Returns a TermsScoreData object</returns>
         public TermScoreData GetOneTermInDocument(string documentId, string term)
-        {                        
-            var doc = Storage.DocumentTermsColl.FindOne(x => x.Document == documentId);
-            long countOfTerms = doc.Terms.Sum(x => x.Count);
-            var term2 = doc.Terms.Find(x => x.Term == term);
+        {
+            DocumentTermsData documentTermsData = Storage.DocumentTermsColl.FindOne(x => x.Document == documentId);
+            long countOfTerms = documentTermsData.Terms.Sum(x => x.Count);
+            var term2 = documentTermsData.Terms.Find(x => x.Term == term);
             long countOfTerm = (term2 == null ? 0 : term2.Count);
             double termFrequency = (countOfTerms == 0 ? 0 : countOfTerm / (double)countOfTerms);
 
@@ -93,6 +92,43 @@ namespace Polar.ML.TfIdf
             };
             return tsd;
         }
+
+        /// <summary>
+        /// Takes a keyword and returns a set amount of documents in which that keyword is the most valuable.
+        /// </summary>
+        /// <param name="term"></param>
+        /// <param name="numberOfDocs"></param>
+        /// <returns>List of documentId strings</returns>
+        public List<string> SearchNEW(string term, int numberOfDocs)
+        {            
+            IEnumerable<DocumentTermsData> documentTermsDatas = Storage.DocumentTermsColl.Find(d => d.Terms.Select(z => z.Term).Any(x => (term == x))); //2020-12-28T10:21:27
+            var docsWithTerm = new Dictionary<string, double>();
+            
+            //2020-12-28T10:37:33 List<DocumentTermsData> documentTermsDatas = Storage.DocumentTermsColl.FindAll().ToList();
+            foreach (var doc in documentTermsDatas)
+            {
+                bool has = false;
+                foreach (var term1 in doc.Terms)
+                {
+                    if (term1.Term == term)
+                    {
+                        var tsd = GetOneTermInDocument(doc.Document, term);
+                        docsWithTerm.Add(doc.Document, tsd.TermScore);
+                        has = true;
+                    }
+                    if (has)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            var sortedList = new List<string>();
+            sortedList.AddRange(docsWithTerm.Keys);
+            sortedList.OrderByDescending(x => docsWithTerm[x]);
+            return sortedList.GetRange(0, Math.Min(numberOfDocs, sortedList.Count));
+        }
+
 
         /// <summary>
         /// Takes a keyword and returns a set amount of documents in which that keyword is the most valuable.

@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿/*OLD CODE: 2020-12-28T08:58:34
+using LiteDB;
 using System.Collections.Generic;
 using System.IO;
 
@@ -124,4 +125,4 @@ namespace Polar.ML.TfIdf
             }
         }
     }
-}
+}*/

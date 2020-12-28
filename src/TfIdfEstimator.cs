@@ -1,13 +1,11 @@
-﻿using LiteDB;
+﻿/*OLD CODE: 2020-12-28T08:34:47
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Polar.ML.TfIdf
 {
-
-    //TODO: move function bodies to new classes, get 'em outta here
-
     /// <summary>
     /// 2020-10-06T12:14:34
     /// </summary>
@@ -45,7 +43,6 @@ namespace Polar.ML.TfIdf
 
             TfIdfStorage.PostDocumentTerms(documentTermsData);
 
-            //TODO: describe it!
             //Find each term in???? and add count for this docuiment?
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<TermDocumentCountData>(TfIdfStorage.TermDocumentCountColl);
@@ -116,8 +113,7 @@ namespace Polar.ML.TfIdf
         /// <param name="term"></param>
         /// <returns>Returns a TermsScoreData object</returns>
         public TermScoreData GetOneTermInDocument(string document, string term)
-        {
-            //TODO check for bugs
+        {            
             using var db = new LiteDatabase(TfIdfStorage.ConnectionString);
             var coll = db.GetCollection<DocumentTermsData>(TfIdfStorage.DocumentTermsColl);
             
@@ -202,5 +198,7 @@ namespace Polar.ML.TfIdf
         {
             return DocumentSimilarity.GetSimilarDocuments(document1, numberOfDocuments, this);
         }
-    }    
+    }
 }
+
+*/

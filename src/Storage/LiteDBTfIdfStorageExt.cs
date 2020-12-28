@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Linq;
 
 namespace Polar.ML.TfIdf
 {
@@ -71,7 +72,9 @@ namespace Polar.ML.TfIdf
 
             using var db = new LiteDatabase(ConnectionString);
             DocumentTermsColl = db.GetCollection<DocumentTermsData>(DocumentTerms);
-            DocumentTermsColl.EnsureIndex(nameof(DocumentTermsData.Document));//TODO: SP: staviti da je dokument id unique - ispitati ima li problema negdje radi toga
+            DocumentTermsColl.EnsureIndex(nameof(DocumentTermsData.Document), true);//+ SP: staviti da je dokument id unique - ispitati ima li problema negdje radi toga
+            //Example using multi key index https://github.com/mbdavid/LiteDB/blob/master/LiteDB.Tests/Database/MultiKey_Mapper_Tests.cs - 2020-12-28T10:14:38
+            DocumentTermsColl.EnsureIndex(d => d.Terms.Select(z => z.Term));
 
             TermDocumentCountColl = db.GetCollection<TermDocumentCountData>(TermDocumentCount);
             TermDocumentCountColl.EnsureIndex(nameof(TermDocumentCountData.Term));
