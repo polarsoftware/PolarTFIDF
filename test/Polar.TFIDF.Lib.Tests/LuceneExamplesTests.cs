@@ -1,6 +1,5 @@
 ﻿using System;
 using Xunit;
-using System.Globalization;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -33,6 +32,7 @@ namespace Polar.ML.TfIdf.Test
             // Construct a machine-independent path for the index
             var basePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             var indexPath = Path.Combine(basePath, "index");
+            System.IO.Directory.Delete(indexPath);
 
             using var dir = FSDirectory.Open(indexPath);
 
